@@ -15,14 +15,20 @@
     group: root
     mode: "0777"
 
-- name: Copy templates
+- name: Add Envoy systemd template
   template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
+    src: "envoy.system.j2"
+    dest: "/etc/systemd/system/envoy.service"
     owner: root
     group: root
-    mode: "0777"
-  loop:
-    - { src: envoy.system.j2, dest: /etc/systemd/system/envoy.service }
-    - { src: envoy.yaml.j2, dest: /etc/envoy/envoy.yaml }
+    mode: "0644"
+  notify: restart envoy
+
+- name: Add Envoy configuration
+  template:
+    src: "{{ envoy_configuration_template }}"
+    dest: "/etc/envoy/envoy.yaml"
+    owner: "{{ envoy_system_user }}"
+    group: "{{ envoy_system_group }}"
+    mode: "0644"
   notify: restart envoy
