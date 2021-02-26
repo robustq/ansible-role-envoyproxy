@@ -1,9 +1,11 @@
+# {{ ansible_managed }}
+
 [Unit]
 Description=Envoy Proxy
 
 [Service]
-User=root
-Group=root
+User={{ envoy_system_user }}
+Group={{ envoy_system_user }}
 ExecStart=/usr/bin/envoy --base-id 1 -c /etc/envoy/envoy.yaml
 ExecReload=/bin/kill -HUP $MAINPID
 ExecStop=/bin/kill -TERM $MAINPID

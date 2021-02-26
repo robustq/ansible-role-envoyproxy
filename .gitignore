@@ -3,3 +3,6 @@
 
 # Others
 dev.yml
+
+# IDE
+.idea/
